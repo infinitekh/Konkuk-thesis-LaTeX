@@ -1,0 +1,25 @@
+\documentclass[korean,doctor,final]{konkuk}
+\title{3-spin 모형}
+\title[english]{Three spin model}
+\author[korean]{김}{혁}{}
+\author[chinese]{金}{爀}{}
+\author[english]{KIM}{Hyeok}{}
+\advisor{여 준 현}{YEO Joonhyun}{}{signd}
+% \advisor[coopr]{}{}{}{signd}
+\department{DP}
+\studentid{201371385}
+\referee{여준현}
+\referee[2]{여준현}
+\referee[3]{여준현}
+\referee[4]{여준현}
+\referee[5]{여준현}
+\approvaldate{2017}{2}
+\refereedate{2017}{2}
+
+\gradyear{2017}{2}
+
+\keywords{hello}
+
+\begin{document}
+
+\end{document} ​

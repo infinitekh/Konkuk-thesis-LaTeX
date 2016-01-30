@@ -1,0 +1,5 @@
+\select@language {english}
+\par \penalty \@M \unhbox \voidb@x \hbox {}\hfill {\bfseries Page}\par \penalty \@M 
+\contentsline {chapter}{List of Tables}{v}{section*.1}
+\contentsline {chapter}{List of Figures}{vii}{section*.2}
+\contentsline {chapter}{Bibliography}{1}{chapter*.3}
