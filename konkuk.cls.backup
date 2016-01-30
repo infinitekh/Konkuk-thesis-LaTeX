@@ -1,10 +1,9 @@
 %%
-%% SNU Thesis Template for LaTeX (EE/CSE 혹은 공대 Only - 확장 가능)
-%% 공대 외에서 쓰려면 "%공대 외"정도로 검색하면 바꿔야 하는 부분을 찾을 수 있습니다.
-%% Modified from the Kaist Thesis Template for LaTeX ver. 0.4
-%% (This template is largely based on the Kaist Thesis Template.)
-%%
-%% @author	Min, Byungho mailto:ekh0324@gmail.com
+%% 서울대 서식에서 시작합니다. 그쪽 것에 라이센스가 안달려있습니다. 
+%% 이 문서의 라이센스는  해당파일을 참조해주시길.
+%% 아직 미완성입니다. 최소한 제가 졸업하기 전에는 완성할 예정이고
+%% 도와주시면 금방 완성되겠지요. 
+%% @author	KIM, Hyeok mailto:ekh0324@gmail.com
 %%
 %% @requirements
 
@@ -40,7 +39,7 @@
 %% 10pt,a4paper,onecolumn,oneside 옵션으로 report 클래스 불러오기
 \LoadClass[11pt,onecolumn,oneside]{memoir}
 
-\RequirePackage{ifthen,graphicx,setspace}       % 추가 패키지 설정
+\RequirePackage{ifthen,graphicx,setspace,calc}       % 추가 패키지 설정
 
 \AtBeginDocument{%                           % \begin{document}와 함께 실행
     \checkparameters                        % 문서 변수가 올바른지 점검
@@ -99,11 +98,15 @@
         {\newcommand{\@titleKor}{#2}}{}%
     \ifthenelse{\equal{#1}{english}}%
         {\newcommand{\@titleEng}{#2}}{}%
+    \ifthenelse{\equal{#1}{subtitle}}%
+        {\newcommand{\@titleSub}{#2}}{}%
 }
 \@onlypreamble{\title}
 
 % @command author 저자 이름
 % @param family_name, given_name 성, 이름을 구분해서 입력
+% 옛날 서식에는 한자가 필요했는데 이제 안 필요한지 
+% 공식서식에는 없습니다. 석사과정만 한자가 필요한 것일 수도.
 % @options [default: (none)]
 % - korean: 한글이름 | chinese: 한문이름 | english: 영문이름
 \renewcommand{\author}[4][korean] {%
@@ -149,6 +152,7 @@
 % @command department 학과이름 - 아래 표에 따라 코드를 입력
 %
 % 컴퓨터공학        EECS
+% 물리학   DP (Department of Physics) 한글자는 짧아서리.
 % 각 단과대에 따라 추가할 수 있습니다.
 
 \newcommand{\@degreeCode}{}          % 학위 영문코드
@@ -230,6 +234,8 @@
 \@onlypreamble{\studentid}
 
 % @command referee 심사위원 (석사과정 3인, 박사과정 5인)
+% ... 직접 이름을 쓰시면 되는데... 이거 귀찮은 작업임.
+% 왜 ____이것 때문에.
 \newcommand{\referee}[2][1] {%
     \ifthenelse{\equal{#1}{1}}{\newcommand{\@refereeChief} {#2}} {}%
     \ifthenelse{\equal{#1}{2}}{\newcommand{\@refereeSecond}{#2}} {}%
@@ -294,55 +300,10 @@
 %% 실제 졸업 논문의 양식을 따랐음. 영문 논문인 경우만 영문 제목이 국문 제목 아래에 추가됨.
 %%
 % %  \Large\textbf{\texttt{博士學位 請求論文\\
-% %  指導敎授 여 준 현}}
+% %  指導敎授 여 교 수 }}
 
 
 \newcommand{\makefrontcover}{%
-% \thispagestyle{empty} \noindent
-% \begin{flushleft}
-%  \Large\textbf{\texttt{박사학위 청구논문\\
-%  지도교수 여 준 현}}
-% \end{flushleft}
-% \vspace*{27mm}
-% \begin{center}
-% {\huge 강자성 3-Spin Model에 대한\\[3mm]
-% 몬테카를로 시뮬레이션 연구 }\\[30mm]
-% \texttt{\Large Monte Carlo Simulation Study for\\
-% Feromagnetic 3-Spin Model}\\
-% \vspace{70mm}
-% {\huge 建國大學校 物理學科\\[20pt]
-% \huge 金 爀}
-% \end{center} 
-% \clearpage
-%  \begin{flushleft}
-% \huge金 爀의 \\
-% 理學 博士學位 請求論文을 認准함
-%  \end{flushleft}
-%  \vspace{30mm}
-%  \begin{center}\Large
-%   審 査 委 員 \\[30pt]
-%   \underline{主 審 \hspace{0.45\textwidth}(印)}\\
-%   \vspace*{10mm}
-% \underline{副 審 \hspace{0.45\textwidth}(印)}\\
-%   \vspace*{10mm}
-% \underline{副 審 \hspace{0.45\textwidth}(印)}\\
-% \vspace*{30mm}
-% 2016年 11月 3日\\
-% \vspace*{25mm}
-% \huge建國大學校
-%  \end{center}
-% \clearpage
-% \begin{center}
-% \vspace*{0mm}
-% \textbf{\huge 강자성 3-Spin Model에 대한\\[3mm]
-% 몬테카를로 시뮬레이션 연구 }\\[40mm]
-% 建國大學校 物理學科 學部課程 \\[20mm]
-% 金 爀 \\[28mm]
-% {\Large Monte Carlo Simulation Study for \\
-% Feromagnetic 3-Spin Model} \\[30mm]
-% \textbf{Hyeok KIM \\
-% Department of Physics, Konkuk University }
-%  \end{center}
 % 
 \renewcommand{\baselinestretch}{1.3}%
     \thispagestyle{empty} \noindent%
@@ -362,7 +323,7 @@
 		공학석사 청구논문 %工學博士學位論文 %공대 외에서 쓰려면 수정해야함.
             \fi
             \fi
-            \\ 지도교수 \@advisorMajorKor
+            \\ 지도교수 \makebox[\widthof{청구논문}]{\@advisorMajorKor}
         \end{flushleft}
     \end{minipage}\\[0mm]
     \begin{minipage}[t][10cm][t]{\textwidth}
@@ -381,10 +342,11 @@
     \end{minipage}
     \begin{minipage}[t][2cm][b]{\textwidth}
         \begin{center}
-            \Large 건국대학교 대학원\\ %大學校 大學院 
-            \@affFullNameKor \\
+              {\LARGE건국대학교 대학원}\\ 
+         
+              {\Large\@affFullNameKor} \\
 %            \@authorChnFN\ \ \ \@authorChnGN\ \ \ \@authorChnGNb %한자 표기 원하면 이걸로
-            \@authorKorFN\ \ \ \@authorKorGN\ \ \ \@authorKorGNb            
+             {\LARGE \@authorKorFN\ \ \ \@authorKorGN\ \ \ \@authorKorGNb}            
         \end{center}
     \end{minipage}\\[0mm]
     \newpage
@@ -412,7 +374,7 @@
 		공학석사 청구논문 %工學博士學位論文 %공대 외에서 쓰려면 수정해야함.
             \fi
             \fi
-            \\ 지도교수 \@advisorMajorKor
+            \\ 지도교수 \makebox[\widthof{청구논문}]{\@advisorMajorKor}
         \end{flushleft}
     \end{minipage}\vfill
     \begin{minipage}[t][6cm][t]{\textwidth}
@@ -431,10 +393,10 @@
     \end{minipage}
     \begin{minipage}[t][2cm][b]{\textwidth}
         \begin{center}
-            \Large 건국대학교 대학원\\ %大學校 大學院 
-            \@affFullNameKor \\
+              {\LARGE건국대학교 대학원}\\ 
+              {\Large\@affFullNameKor} \\
 %            \@authorChnFN\ \ \ \@authorChnGN\ \ \ \@authorChnGNb %한자 표기 원하면 이걸로
-            \@authorKorFN\ \ \ \@authorKorGN\ \ \ \@authorKorGNb            
+             {\LARGE \@authorKorFN\ \ \ \@authorKorGN\ \ \ \@authorKorGNb}            
         \end{center}
     \end{minipage}\\[0mm]
     \newpage
@@ -484,26 +446,37 @@
         \newcommand{\@refWidth}{50pt}
         \newcommand{\@sealWidth}{40pt}
         \begin{tabular}{crr}
+        
+%         \begin{center}\Large
+%   審 査 委 員 \\[30pt]
+%   \underline{심사위원장 \hspace{0.45\textwidth}(印)}\\
+%   \vspace*{10mm}
+% \underline{副 審 \hspace{0.45\textwidth}(印)}\\
+%   \vspace*{10mm}
+% \underline{副 審 \hspace{0.45\textwidth}(印)}\\
+% \vspace*{30mm}
+% 2016年 11月 3日\\
+% \vspace*{25mm}
+% \huge建國大學校
+        
             \@ifundefined{@refereeChief}{}
             %委 員 長
-            {\makebox[\@refWidth][s]{심사위원장} & \makebox[\@nameWidth][s]{\@refereeChief} & \makebox[\@sealWidth][r]{(인)} \\
-            \hline}
-            \@ifundefined{@refereeSecond}{}
-            %%副 委 員 長
-            { \makebox[\@refWidth][s]{심사위원} & \makebox[\@nameWidth][s]{\@refereeSecond} & \makebox[\@sealWidth][r]{(인)} \\ 
-            \hline}
-            \@ifundefined{@refereeThird}{}
-            { \makebox[\@refWidth][s]{심사위원} & \makebox[\@nameWidth][s]{\@refereeThird} & \makebox[\@sealWidth][r]{(인)} \\
-            \hline}
-            \@ifundefined{@refereeFifth}{}
-            { \makebox[\@refWidth][s]{심사위원} & \makebox[\@nameWidth][s]{\@refereeFourth} & \makebox[\@sealWidth][r]{(인)} \\
-            \hline}
-            \@ifundefined{@refereeFifth}{}
-            { \makebox[\@refWidth][s]{심사위원} & \makebox[\@nameWidth][s]{\@refereeFifth} & \makebox[\@sealWidth][r]{(인)} \\
-            \hline}
+            {심사위원장\underline{ \hspace{0.45\textwidth}\@refereeChief(印)}\\
+            }
+           \\ %大學校 大學院 
         \end{tabular}  
         \end{center} 
     \end{minipage}
+    \begin{minipage}[t][2.5cm][t]{\textwidth}
+        \begin{center}
+            \Large \@gradYear 년 \@gradMonth 월
+        \end{center}
+    \end{minipage}
+    \begin{minipage}[t][2cm][b]{\textwidth}
+        \begin{center}
+            \Large 건국대학교 대학원\\ %大學校 大學院 
+        \end{center}
+    \end{minipage}\\[0mm]
     \newpage
 }
 
@@ -535,7 +508,7 @@
 
 %%
 %% 목차 일괄 생성
-%%
+%% 이거 서식작업 학교도서관에서 빠꾸나와서 잘해야함. 
 \newcommand{\makecontents}{%            % TOC, LOT, LOF 생성
     \tableofcontents
     \listoftables
@@ -569,7 +542,7 @@
 
 %%
 %% 감사의 글 생성
-%%
+%% 이런것은 그냥 본인이 직접 작성하면 ... 어차피 이부분은 서식위반이라... 
 \newcommand{\acknowledgement}{%                 % 감사의 글
     \chapter*{감 사 의\ \ 글}
     \pagestyle{empty}
