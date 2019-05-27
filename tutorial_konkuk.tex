@@ -7,7 +7,7 @@
 % 
 \author[korean]{김 혁}
 \author[hanja]{金 爀}
-\author[english]{Hyeok, KIM}
+\author[english]{KIM, Hyeok}
 \advisor{여 교 수}{Prof. YEO}{}
 \department[physics]
 % 
@@ -21,8 +21,15 @@
 \referee[5]{김오령}
 % % 
 \gradyear{2020}{2}
+\submityear{2019}{11}
+\appryear{2018}{12}
+
  \keywords{hello, namer}
 % \nonstopmode
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
 
 \begin{document}
 \makecontents
@@ -30,9 +37,11 @@
 % 	\listoftables
 % 	\listoffigures
 % 	\appendix
-  
-%intro
-
+  \begin{abstractEng}
+In a sunny outdoor ceremony at the Imperial Palace, Trump shook hands with Emperor Naruhito and his wife, engaging warmly as he became the first foreign leader to meet the new monarch. Later he reviewed a cordon of Japanese troops and greeted yellow-hatted schoolchildren waving flags.
+Those were more buttoned-up occasions than the round of golf, sumo wrestling tournament and hibachi dinner the President enjoyed Sunday. In manners-conscious Japan, Trump's interactions with the monarch and his wife were closely scrutinized. And his talks with Abe will come after a Sunday tweet from Trump threw into question the leaders' alignment on North Korea.
+  \end{abstractEng}
+\main
 \chapter{별헤는밤 }
 % \normalsize
 여야 4당, 최대한 기간 단축 시도할듯..한국당 반발로 난항 예상
@@ -113,11 +122,12 @@
 \end{table}
 
 \clearpage
-\begin{abstract}
+
+\begin{abstractKor}
 가자 똥 치우러2시간전 \par
 한일전 승리의 날. 기분 좋다. \par
 답글43댓글 찬성하기1623댓글 비추천하기154 
-
+\textbf{}
 거센-바람2시간전 \par
 연합 너 삐딱하게 기사 쓸래 콱.. \par
 답글16댓글 찬성하기650댓글 비추천하기23 
@@ -125,9 +135,45 @@
 movieboy2시간전 \par 
 기레기야\, 험로를 원하는가 \par 
 답글2
-\end{abstract}
+\end{abstractKor}
+
+
 \bibliographystyle{asa}
 \bibliography{testbibliography}
+
+\clearpage
+\AppendixTitleToToc
+\AttachAppendixTitleToSecnum
+\appendix
+\renewcommand\thechapter{\Alph{APPchapter}}
+\renewcommand\thesection{\thechapter.\arabic{APPsection}}
+\renewcommand\thesubsection{\thesection.\arabic{APPsubsection}}
+\setcounter{APPchapter}{0}
+\chapterstyle{appendixdefault}
+
+% \renewcommand*\prechapternum{\chapnamefont 부록~}
+\renewcommand*\prechapternum{\chapnamefont \appendixname\space}
+% \renewcommand*\postchapternum{ }
+\renewcommand*\postchapternum{}
+
+% \renewcommand*\printchapternum{\chapnumfont\thechapter}
+
+
+\renewcommand\hchaptertitlehead{\appendixname\,\thechapter\,}
+ 
+\chapter{자료}
+\section{섹션}
+\subsection{서브섹션}
+\chapter{예제}
+ 
+\begin{align}
+ a
+ \\b
+ \\c
+\end{align}
+
+\chapter{자료}
+
 % \thebibliography
 %
 \end{document}

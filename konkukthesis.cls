@@ -37,7 +37,7 @@
 %
 %%들여쓰기
 \usepackage{indentfirst}
-\setlength\parindent{2.0em}
+
 \RequirePackage{ifthen}       % 추가 패키지 설정
 
 %%%% Hangul-ucs preamble.......
@@ -80,10 +80,12 @@
 \AtBeginDocument{%                           % \begin{document}와 함께 실행
     \checkparameters                        % 문서 변수가 올바른지 점검
     \if@isFinal                             % final 옵션이 지정되어 있으면
+      \bfseries
        \makefrontcover %
         \makeinnertitle         % 앞표지, 속표지 생성
-        \makeapprovalfirst% 제출승인서 
-        \makeapprovalsecond%          심사완료검인 생성
+        \makesubmit% 제출승인서 
+        \makeapproval%          심사완료검인 생성
+        \mdseries
    \fi    %
    }
 \AtEndDocument{}                             % \end{document}와 함께 실행
@@ -96,13 +98,20 @@
 % \usepackage[hangul]{kotex}
 
 \usepackage{iftex}
-% \ifPDFTeX
-% \usepackage{dhucs-nanumfont}
-% \else\ifXeTeX
-% \setmainhangulfont{NanumMyeongjo}
-% \else\ifLuaTeX
-% \setmainhangulfont{NanumMyeongjo}
-% \fi\fi\fi
+\ifPDFTeX
+\usepackage{dhucs-nanumfont}
+\else\ifXeTeX
+\setmainhangulfont{NanumMyeongjo}
+ \renewcommand{\normalsize}{\fontsize{11pt}{13.2pt}\selectfont}
+ \renewcommand{\large}{\fontsize{13pt}{15.6pt}\selectfont}
+ \renewcommand{\Large}{\fontsize{14pt}{16.8pt}\selectfont}
+ \renewcommand{\LARGE}{\fontsize{16pt}{19.2pt}\selectfont}
+ \renewcommand{\huge}{\fontsize{18pt}{21.6pt}\selectfont}
+ \renewcommand{\Huge}{\fontsize{22pt}{26.4pt}\selectfont}
+
+\else\ifLuaTeX
+\setmainhangulfont{NanumMyeongjo}
+\fi\fi\fi
 
 %% 줄간격 설정 (References, Contents(그림, 표 목차 포함)는 줄간격이 모두 1.3으로 고정되어 있습니다.)
 \renewcommand{\baselinestretch}{1.6}
@@ -281,8 +290,10 @@
                 }
         }
         \renewcommand{\@degreeNameKor}{%                       % 학위 영문이름
-            \@degreeFieldKor\ifthenelse{\boolean{@isDoctor}} {박사}{석사}
+            %\@degreeFieldKor
+            \ifthenelse{\boolean{@isDoctor}} {박사}{석사}학위
         }
+        
 }
 \@onlypreamble{\department}
 
@@ -308,6 +319,14 @@
 \newcommand{\gradyear}[2]{%
 	\newcommand{\@gradYear}{#1}
 	\newcommand{\@gradMonth}{#2}
+}
+\newcommand{\appryear}[2]{%
+	\newcommand{\@apprYear}{#1}
+	\newcommand{\@apprMonth}{#2}
+}
+\newcommand{\submityear}[2]{%
+	\newcommand{\@submitYear}{#1}
+	\newcommand{\@submitMonth}{#2}
 }
 %\@onlypreamble{\gradyear}
 
@@ -348,8 +367,8 @@
 %%
 %% 앞표지 생성
 \newcommand{\makefrontcover}{}
-\newcommand{\makeapprovalfirst}{}
-\newcommand{\makeapprovalsecond}{}
+\newcommand{\makesubmit}{}
+\newcommand{\makeapproval}{}
 \newcommand{\makeinnertitle}{}
 
 \renewcommand{\makefrontcover}{%
@@ -363,6 +382,7 @@
         	
 	\begin{minipage}[t][8.5cm][t]{\textwidth}
 		\centering	\Huge  \@titleKor % \fontsize{24pt}{24pt}\selectfont
+		\centering	 \LARGE  \@titleSub
 		\if@isKorean 
 		\else
 		\par\Large \@titleEng       
@@ -419,72 +439,76 @@
 % %%
 % %% 제출지 인준지
 % %%
-\renewcommand{\makeapprovalfirst}{%
+\renewcommand{\makesubmit}{%
 \thispagestyle{empty} \noindent
 	\begin{minipage}[t][9cm][t]{\textwidth}
 		\centering
 			\Huge \@titleKor           % 학위논문 한글제목
                        \par 
-			\Large \@titleEng           % 학위논문 한글제목		
+			\LARGE \@titleSub           % 학위논문 한글제목
+                       \par 
+			\LARGE \@titleEng           % 학위논문 한글제목		
+%                        \par 
+% 			\Large\@titleEngSub           % 학위논문 한글제목
 	\end{minipage}
 	\vspace*{10mm}   
 	
 	\begin{minipage}[t][6cm][t]{\textwidth}
 		\centering
-			\Large 
+			\LARGE
 			이 논문을 \@degreeNameKor  청구논문으로 제출합니다\par \vfill  
-			\@gradYear년 \@gradMonth월
+			\@submitYear년 \@submitMonth월
 	\end{minipage}
-% 	\bigskip
+	\vspace{1cm}
 
 	\begin{minipage}[t][2cm][b]{\textwidth}
 		\centering
-			{\LARGE건국대학교 대학원}\par
-% 			{\Large\@deptNameKor} \\
-			{\LARGE \@authorKor}
+			{\huge건국대학교 대학원}\par
+			{\LARGE\@deptNameKor} \\
+			{\huge\@authorKor}
 	\end{minipage}\\[0mm]
 	\clearpage
 }
 
-\renewcommand{\makeapprovalsecond}{
+\renewcommand{\makeapproval}{
 	\thispagestyle{empty}
 	{
-	\huge \@authorKor의 \@degreeNameKor 청구논문을 인준함\\ %공대 외에서 쓰려면 수정해야함.
+	\huge\bfseries \@authorKor의 \@degreeNameKor 청구논문을 인준함\\ %공대 외에서 쓰려면 수정해야함.
 	\bigskip
 
 	\if@isDoctor
 	\begin{minipage}[t][7cm][b]{\textwidth}
 	%
-		\Large\centering%
+		\bfseries \Large\centering%
 					%委 員 長
-		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(印)}}} 
+		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(인)}}} 
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 	\end{minipage}
 	\else
 	\begin{minipage}[t][7cm][b]{\textwidth}
 		\Large\centering
-		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(印)}}} 
+		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(인)}}} 
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 		\vfill
-		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(印)}}}
+		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 		\vfill
 	\end{minipage}
 	\fi
 	\vfill %\centering
 	\begin{minipage}[t][2.0cm][t]{\textwidth}
-		\centering 	\LARGE \@gradYear년 \@gradMonth월
+		\centering \bfseries	\LARGE \@apprYear년 \@apprMonth월
 	\end{minipage}
 	
 	\begin{minipage}[t][2cm][t]{\textwidth}
-		\centering 	\huge 건국대학교 대학원
+		\centering 	\bfseries \huge 건국대학교 대학원
 	\end{minipage}\\[0mm]
         }
 	\clearpage
@@ -499,28 +523,69 @@
 \newcommand{\@lastPage}{\pageref{paperlastpagelabel}} % 총 페이지 수 계산용
 %
 % \usepackage{abstract}
-% \renewenvironment{abstract}{%
+\newenvironment{abstractKor}{%
 % 	\pagenumbering{roman}  % 로마자 페이지 시작
-% 	\pagestyle{plain}%
-% %
-% 	\renewcommand{\linebreak}{\ } % \linebreak -> 공백 대체
-% 	\begin{center}
-% 		\textbf{\LARGE\abstractname} % 초록명 -> Abstract
-% 	\end{center}%
-% 		%여기에 초록이 들어옴.
-% 	\addcontentsline{toc}{chapter}{\abstractname}% 초록을 목차(TOC)에 삽입
-% }{%
-% %         \setcounter{pagemarker}{\thepage}             % 마지막 페이지 번호를 저장
+	\clearpage
+	\pagestyle{plain}%
+	\addcontentsline{toc}{chapter}{국문초록}
+	% 초록을 목차(TOC)에 삽입%
+	\renewcommand{\linebreak}{\ } % \linebreak -> 공백 대체
+	{\raggedleft \bfseries \Large국문초록}
+	\begin{center}
+		\textbf{\LARGE\@titleKor} % 초록명 -> Abstract
+\\  
+		\textbf{\Large\@titleEng}
+	\end{center}%
+		%여기에 초록이 들어옴.
+}{%
+%         \setcounter{pagemarker}{\thepage}             % 마지막 페이지 번호를 저장
 %         \setcounter{pagemarker}{\value{\page}}             % 마지막 페이지 번호를 저장
-%    \\
-% 	\rule{\linewidth}{1mm}
-% 	\\ \textbf{Keywords}:\ \@keywords
-% 	\\
-% 	%\\ \textbf{Student Number}:\ \@studentID
-% 	\addtocounter{pagemarker}{1}% 백색별지분을 고려
+    \\
+    \vfill
+	{\noindent\rule{\linewidth}{.5mm}}
+	\\ \textbf{주제어} :\ \@keywords
+	\\
+	%\\ \textbf{Student Number}:\ \@studentID
+	\addtocounter{pagemarker}{1}% 백색별지분을 고려
 % 	\newpage \pagenumbering{arabic}% 페이지 아라비아 숫자 포맷
-% 	\let\linebreak\@tempbreak % \linebreak 명령 복원
-% }
+	\let\linebreak\@tempbreak % \linebreak 명령 복원
+    \indent
+}
+\newenvironment{abstractEng}{%
+% 	\pagenumbering{roman}  % 로마자 페이지 시작
+	\clearpage
+	\pagestyle{plain}%
+	\addcontentsline{toc}{chapter}{ABSTRACT}
+	% 초록을 목차(TOC)에 삽입
+	
+%
+	\renewcommand{\linebreak}{\ } % \linebreak -> 공백 대체
+	{\raggedleft \bfseries \Large ABSTRACT}
+	\begin{center}
+		\bfseries\LARGE\@titleEng\\
+		\Large % 초록명 -> Abstract
+	\end{center}%
+	
+	\begin{flushright}
+       \bfseries\@authorEng \\
+	\@deptNameEng \\
+	\@kuEng
+	\end{flushright}
+		%여기에 초록이 들어옴.
+}{%
+%         \setcounter{pagemarker}{\thepage}             % 마지막 페이지 번호를 저장
+%         \setcounter{pagemarker}{\value{\page}}             % 마지막 페이지 번호를 저장
+    \\
+    \vfill
+	{\noindent\rule{\linewidth}{.5mm}}
+	\\ \textbf{Keyword} :\ \@keywords
+	\\
+	%\\ \textbf{Student Number}:\ \@studentID
+	\addtocounter{pagemarker}{1}% 백색별지분을 고려
+% 	\newpage \pagenumbering{arabic}% 페이지 아라비아 숫자 포맷
+	\let\linebreak\@tempbreak % \linebreak 명령 복원
+    \indent
+}
 %
 %%
 %% 목차 일괄 생성
@@ -532,6 +597,10 @@
 	\listoftables
 	\listoffigures % 
 % 		\clearpage\pagenumbering{arabic}
-\mainmatter
+}
+\newcommand{\main}{%
+\mainmatter \setlength\parindent{1.0em} 
+	\renewcommand{\baselinestretch}{1.6}\selectfont %
+
 }
 \endinput
