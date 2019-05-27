@@ -211,7 +211,7 @@
 
 % \newcommand{\@titleKor}{}{}
 \usepackage{ifthen}
-\renewcommand{\title}[2][default] {%
+\newcommand{\titles}[2][default] {%
     \ifthenelse{\equal{#1}{korean}}%
         {\newcommand{\@titleKor}{#2}}{}%
     \ifthenelse{\equal{#1}{english}}%
@@ -221,7 +221,7 @@
 	
 % 	\endinput
 }
-\@onlypreamble{\title}
+\@onlypreamble{\titles}
 
 % @command author 저자 이름
 % @param family_name, given_name 성, 이름을 구분해서 입력
@@ -331,8 +331,11 @@
 %\@onlypreamble{\gradyear}
 
 % @command keywords 키워드
-\newcommand{\keywords}[1]{%
-	\newcommand{\@keywords}{#1}
+\newcommand{\keywords}[2][korean]{%
+    \ifthenelse{\equal{#1}{korean}}%
+        {\newcommand{\@keywordsKor}{#2}}{}%
+    \ifthenelse{\equal{#1}{english}}%
+        {\newcommand{\@keywordsEng}{#2}}{}%
 }
 \@onlypreamble{\keywords}
 
@@ -543,7 +546,7 @@
     \\
     \vfill
 	{\noindent\rule{\linewidth}{.5mm}}
-	\\ \textbf{주제어} :\ \@keywords
+	\\ \textbf{주제어} :\ \@keywordsKor
 	\\
 	%\\ \textbf{Student Number}:\ \@studentID
 	\addtocounter{pagemarker}{1}% 백색별지분을 고려
@@ -572,13 +575,14 @@
 	\@kuEng
 	\end{flushright}
 		%여기에 초록이 들어옴.
+		    \indent
 }{%
 %         \setcounter{pagemarker}{\thepage}             % 마지막 페이지 번호를 저장
 %         \setcounter{pagemarker}{\value{\page}}             % 마지막 페이지 번호를 저장
     \\
     \vfill
 	{\noindent\rule{\linewidth}{.5mm}}
-	\\ \textbf{Keyword} :\ \@keywords
+	\\ \textbf{Keyword} :\ \@keywordsEng
 	\\
 	%\\ \textbf{Student Number}:\ \@studentID
 	\addtocounter{pagemarker}{1}% 백색별지분을 고려
