@@ -11,6 +11,7 @@
 \newif\if@isDoctor
 \newif\if@isKorean
 \newif\if@isFinal
+\newif\if@isTitle
 \newif\if@PDFdoc\@PDFdocfalse
 \newif\if@dvips\@dvipsfalse
 %% 새 옵션 모음 - doctor|master, korean|english, final|draft
@@ -20,13 +21,15 @@
 \DeclareOption{english}{\@isKoreanfalse}
 \DeclareOption{final}  {\@isFinaltrue}
 \DeclareOption{draft}  {\@isFinalfalse}
+\DeclareOption{title}  {\@isTitletrue}
+\DeclareOption{notitle}  {\@isTitlefalse}
 \DeclareOption{pdfdoc} {\@PDFdoctrue}
 \DeclareOption{dvips}  {\@dvipstrue}
 \DeclareOption{leqno}  {\PassOptionsToClass{leqno}  {oblivoir}}
 \DeclareOption{fleqn}  {\PassOptionsToClass{fleqn}  {oblivoir}}
 \DeclareOption{openbib}{\PassOptionsToClass{openbib}{oblivoir}}
 %
-\ExecuteOptions{doctor,korean,final}         % doctor,korean,final이 기본값
+\ExecuteOptions{doctor,korean,final,title}         % doctor,korean,final,title이 기본값
 \ProcessOptions* %
 %
 %
@@ -79,7 +82,7 @@
 
 \AtBeginDocument{%                           % \begin{document}와 함께 실행
     \checkparameters                        % 문서 변수가 올바른지 점검
-    \if@isFinal                             % final 옵션이 지정되어 있으면
+    \if@isTitle                             % final 옵션이 지정되어 있으면
       \bfseries
        \makefrontcover %
         \makeinnertitle         % 앞표지, 속표지 생성
@@ -130,6 +133,7 @@
 \newcommand{\@kuEng}{Graduate School of Konkuk University}
 \newcommand{\@kuKor}{건국대학교 대학원}
 % Graduate School of Konkuk University
+% 이 부문은 본인이 수정해서 하세요 .
 % 건축전문대학원 : Graduate School of Architecture, Konkuk University
 % 행정대학원 : Graduate School of Public Administration, Konkuk University
 % 교육대학원 : Graduate School of Education, Konkuk University
