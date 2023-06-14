@@ -34,7 +34,15 @@
 %
 %
 %% 10pt,a4paper,onecolumn,oneside 옵션으로 oblivoir 클래스 불러오기
-\LoadClass[11pt,onecolumn,oneside,b5paper,hangul,chapter]{oblivoir}
+\LoadClass[11pt,
+onecolumn,    	% 건국대 서식
+oneside,     	% 건국대 서식
+b5paper,
+hangul,			% 한글을 쓰려고 oblivoir사용.
+chapter,		% 장이 가장 큰 영역.
+figtabcapt]{oblivoir}
+%figtabcapt   표caption을 <표3.1>과 같은 형태로 해줌.
+
 % \renewcommand{\LARGE}{\fontsize{16pt}{20pt}\selectfont}
 % \newcommand{\HUGE}{\fontsize{24.88pt}{28pt}\selectfont}
 %
@@ -82,12 +90,12 @@
 
 \AtBeginDocument{%                           % \begin{document}와 함께 실행
     \checkparameters                        % 문서 변수가 올바른지 점검
-    \if@isTitle                             % final 옵션이 지정되어 있으면
+    \if@isTitle             % final 옵션이 지정되어 있으면
       \bfseries
-       \makefrontcover %
-        \makeinnertitle         % 앞표지, 속표지 생성
-        \makesubmit% 제출승인서 
-        \makeapproval%          심사완료검인 생성
+       \makefrontcover 		%
+        \makeinnertitle     % 앞표지, 속표지 생성
+        \makesubmit			% 제출승인서
+        \makeapproval		% 심사완료검인 생성
         \mdseries
    \fi    %
    }
@@ -161,45 +169,48 @@
 
 
 \makechapterstyle{konkuk}{
-   \chapterstyle{hangul}
-    \setlength{\beforechapskip}{3.5ex \@plus 1ex \@minus .2ex}
-  \renewcommand*{\chapterheadstart}{\vspace{\beforechapskip}}
-  \setlength{\afterchapskip}{2.3ex \@plus .2ex}
-  \renewcommand{\printchaptername}{}
-  \renewcommand{\chapternamenum}{}
-  \renewcommand{\chaptitlefont}{\centering\normalfont\LARGE\bfseries \selectfont}
-  \renewcommand{\chapnamefont}{\chaptitlefont}
-  \renewcommand{\chapnumfont}{\chaptitlefont}
-  \renewcommand{\printchapternum}{\centering \chapnumfont \thechapter}
-  \renewcommand{\afterchapternum}{\quad}
-  
-    \renewcommand*{\prechapternum}{\chapnamefont\centering 제~}
-  \renewcommand*{\postchapternum}{\chapnamefont ~장}
-  \renewcommand*{\hchaptertitlehead}{제\,\thechapter\,장}
-  
-  
-  \renewcommand{\thesection}{제~\arabic{section}~절}
-  \renewcommand{\thesubsection}{\bfseries\quad\arabic{subsection}.}
+	\chapterstyle{hangul}
+	\setlength{\beforechapskip}{3.5ex \@plus 1ex \@minus .2ex}
+	\renewcommand*{\chapterheadstart}{\vspace{\beforechapskip}}
+	\setlength{\afterchapskip}{2.3ex \@plus .2ex}
+	\renewcommand{\printchaptername}{}
+	\renewcommand{\chapternamenum}{}
+	\renewcommand{\chaptitlefont}{\centering\normalfont\LARGE\bfseries \selectfont}
+	\renewcommand{\chapnamefont}{\chaptitlefont}
+	\renewcommand{\chapnumfont}{\chaptitlefont}
+	\renewcommand{\printchapternum}{\centering \chapnumfont \thechapter}
+	\renewcommand{\afterchapternum}{\quad}
 
-  \renewcommand{\thetable}{\textlangle표 \arabic{chapter}.\arabic{table}\textrangle}   
-\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
-  
+	\renewcommand*{\prechapternum}{\chapnamefont\centering 제~}
+	\renewcommand*{\postchapternum}{\chapnamefont ~장}
+	\renewcommand*{\hchaptertitlehead}{제\,\thechapter\,장}
+
+	\renewcommand{\thesection}{제~\arabic{section}~절}
+	\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+	\renewcommand{\thesubsection}{\bfseries\quad\arabic{subsection}}
+	\renewcommand*{\cftchapterfont}{\large\bfseries\sffamily}%
+	\renewcommand*{\cftchapterpagefont}{\large\bfseries\sffamily}%
+
+	\cftsetindents{chapter}{0em}{5em}
+	\cftsetindents{section}{1em}{4.0em}
+	\cftsetindents{subsection}{2em}{3.9em}
+	\renewcommand\cftchapterleader{\cftdotfill{\cftsectiondotsep}} % 점선채우기
+}
+
+%$  \renewcommand{\thetable}{\textlangle표 \arabic{chapter}.\arabic{table}\textrangle}   
+ %\renewcommand{\tablename}{}   
+
+
 % \setlength{\cftchapterindent}{0em}
 % \cftc{\large}
 
 % \renewcommand{\cftchapterfont}{\normal}
-\renewcommand*{\cftchapterfont}{\large\bfseries\sffamily}%
-    \renewcommand*{\cftchapterpagefont}{\large\bfseries\sffamily}%
-
- \cftsetindents{section}{1em}{4.0em}
-\cftsetindents{subsection}{2em}{3.9em}
 % \cftsetindents{subsubsection}{8.4em}{4.8em}
 % \cftsetindents{paragraph}{10.7em}{5.7em}
 % \cftsetindents{subparagraph}{12.7em}{6.7em}  
 % \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} 
-\renewcommand\cftchapterleader{\cftdotfill{\cftsectiondotsep}}
 
-}
+
 % \pagestyle{hangul}
 % \chapterstyle{hangul}
 \chapterstyle{konkuk}
