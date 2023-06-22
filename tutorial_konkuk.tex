@@ -1,28 +1,30 @@
+%xelatex 사용할 것
 \documentclass[final,doctor,korean,pdfdoc]{konkukthesis}
-% \input{package}
-% \documentclass{konkukreport}
- \titles[korean]{3-spin 모형변형 }
-\titles[english]{Three spin model}
-\titles[subtitle]{}
+\titles[korean]{국문 논문 제목}
+\titles[english]{영문 논문 제목}
+\titles[subtitle]{한글논문 부제목}
+% 영어 부제목은 고려하지 않았음. 필요하시면 수정하세요.
 % 
 \author[korean]{김 혁}
 \author[hanja]{金 爀}
 \author[english]{KIM, Hyeok}
-\advisor{여 교 수}{Prof. YEO}{}
+% 청구논문과 양쪽 정렬이 되어야 하므로 글자 사이사이에 \hfill을 집어 넣으시고,
+% 교수님 성함이 4글자가 넘어가면 어케하는지 학교에 문의하세요.
+\advisor{김\hfill강}{Prof. KIM}{}
 \department[physics]
-% 
-% 
-% 
+% 현재 가능한 리스트  
+% physics  chemistry 
+% 어렵지 않으니 konkukthesis.cls 파일 안에서 department 검색해서 보시고 본인과에 대해 작성하세요.
 % 
 \referee[1]{여두령}
 \referee[2]{송차령}
-\referee[3]{박삼령}
+\referee[3]{김지도}
 \referee[4]{이사령}
 \referee[5]{김오령}
 % % 
-\gradyear{2020}{2}
-\submityear{2019}{11}
-\appryear{2018}{12}
+\gradyear{2023}{8}
+\submityear{2023}{5}
+\appryear{2023}{6}
 
  \keywords[korean]{안녕, 키워드}
  \keywords[english]{hello, namer}
@@ -34,7 +36,7 @@
 
 \begin{document}
 \makecontents
-% 	\tableofcontents
+% 	\tableofcontents % 다 들어 있음.  
 % 	\listoftables
 % 	\listoffigures
 % 	\appendix
@@ -124,6 +126,37 @@ Those were more buttoned-up occasions than the round of golf, sumo wrestling tou
 
 \clearpage
 
+
+
+\bibliographystyle{asa}
+\bibliography{testbibliography}
+%biblography files 
+
+\clearpage
+%\AppendixTitleToToc
+%\AttachAppendixTitleToSecnum
+\back
+\chapter{부록}
+%부록은  1 2 3 4 5 를 적는데, 틀을 만드는건 바보짓. 그냥 직접 쓰시오.
+%건국대학교 서식은  [부록1.] 이런식으로 부록을 나눔. 직접 입력하는게 편함.
+%부록이 크면 A,B,C 권으로 나누는것도 있는거 같은데, 그건 스스로.
+\section{[부록1.] 자료}
+\subsection{서브섹션}
+\subsubsection{서브서브섹션}
+\section{[부록2.] 예제}
+ 
+\begin{align}
+ a
+ \\b
+ \\c
+\end{align}
+
+
+\section{[부록3.] 자료}
+자료
+% \thebibliography
+%
+\printglossaries
 \begin{abstractKor}
 \indent
 가자 똥 치우러2시간전 \par
@@ -138,44 +171,4 @@ movieboy2시간전 \par
 기레기야\, 험로를 원하는가 \par 
 답글2
 \end{abstractKor}
-
-
-\bibliographystyle{asa}
-\bibliography{testbibliography}
-
-\clearpage
-\AppendixTitleToToc
-\AttachAppendixTitleToSecnum
-\appendix
-\renewcommand\thechapter{\Alph{APPchapter}}
-\renewcommand\thesection{\thechapter.\arabic{APPsection}}
-\renewcommand\thesubsection{\thesection.\arabic{APPsubsection}}
-\setcounter{APPchapter}{0}
-\chapterstyle{appendixdefault}
-
-% \renewcommand*\prechapternum{\chapnamefont 부록~}
-\renewcommand*\prechapternum{\chapnamefont \appendixname\space}
-% \renewcommand*\postchapternum{ }
-\renewcommand*\postchapternum{}
-
-% \renewcommand*\printchapternum{\chapnumfont\thechapter}
-
-
-\renewcommand\hchaptertitlehead{\appendixname\,\thechapter\,}
- 
-\chapter{자료}
-\section{섹션}
-\subsection{서브섹션}
-\chapter{예제}
- 
-\begin{align}
- a
- \\b
- \\c
-\end{align}
-
-\chapter{자료}
-
-% \thebibliography
-%
 \end{document}

@@ -6,7 +6,7 @@
 %%
 %% @requirements
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{konkukthesis}
+\ProvidesClass{konkukthesis}[2023/06/22]
 %% 옵션 설정을 위한 boolean 변수선언
 \newif\if@isDoctor
 \newif\if@isKorean
@@ -40,7 +40,8 @@ oneside,     	% 건국대 서식
 b5paper,
 hangul,			% 한글을 쓰려고 oblivoir사용.
 chapter,		% 장이 가장 큰 영역.
-figtabcapt]{oblivoir}
+%kosection,      % section에 제1절 표시 제~1~이 아니라 붙여써야.
+figtabcapt,]{oblivoir}
 %figtabcapt   표caption을 <표3.1>과 같은 형태로 해줌.
 
 % \renewcommand{\LARGE}{\fontsize{16pt}{20pt}\selectfont}
@@ -48,6 +49,8 @@ figtabcapt]{oblivoir}
 %
 %%들여쓰기
 \usepackage{indentfirst}
+\usepackage{ob-mathleading}
+\usepackage{ob-koreanappendix}
 
 \RequirePackage{ifthen}       % 추가 패키지 설정
 
@@ -92,8 +95,8 @@ figtabcapt]{oblivoir}
     \checkparameters                        % 문서 변수가 올바른지 점검
     \if@isTitle             % final 옵션이 지정되어 있으면
       \bfseries
-       \makefrontcover 		%
-        \makeinnertitle     % 앞표지, 속표지 생성
+       \makefrontcover 		% 앞표지
+        %$\makeinnertitle %  속표지 생성 2023속표지 규격 삭제
         \makesubmit			% 제출승인서
         \makeapproval		% 심사완료검인 생성
         \mdseries
@@ -106,6 +109,9 @@ figtabcapt]{oblivoir}
 \usepackage{fapapersize}
 \usefapapersize{182mm,257mm,25mm,*,25mm,*}
 \usepackage{calc}
+\usepackage{glossaries}
+\usepackage{acronym}
+\usepackage{textcomp}
 % \usepackage[hangul]{kotex}
 
 \usepackage{iftex}
@@ -166,35 +172,120 @@ figtabcapt]{oblivoir}
      \let\@evenhead\@empty\let\@evenfoot\@oddfoot
 }
 % \usepackage{tocloft}
-
+\makeheadstyles{konkuk}{
+% chapter
+\setlength{\beforechapskip}{3.5ex \@plus 1ex \@minus .2ex}
+\renewcommand*{\chapterheadstart}{\vspace{\beforechapskip}}
+\setlength{\afterchapskip}{10mm \@plus 1ex}
+\renewcommand{\chaptitlefont}{\centering\normalfont\LARGE\bfseries \selectfont}
+% section
+% \setbeforesecskip{1.5\onelineskip
+% \@plus -0.5\onelineskip \@minus -.5\onelineskip}%
+\setsecindent{0ex}
+% \setaftersecskip{0.667\onelineskip \@plus 0.1\onelineskip}%
+\setsecheadstyle{\Large\bfseries\raggedright}%
+% subsection
+% \setbeforesubsecskip{-0.667\onelineskip
+% \@plus -0.25\onelineskip \@minus -0.25\onelineskip}%
+\setsubsecindent{1ex}
+% \setaftersubsecskip{0.333\onelineskip \@plus 0.1\onelineskip}%
+\setsubsecheadstyle{\normalfont\large\bfseries}%
+% subsubsection
+\setbeforesubsubsecskip{-0.667\onelineskip
+\@plus -0.25\onelineskip \@minus -0.25\onelineskip}%
+\setsubsubsecindent{2ex}
+% \setaftersubsubsecskip{0.333\onelineskip \@plus 0.1\onelineskip}%
+% \setsubsubsecheadstyle{\normalfont\large\bfseries\raggedright}%
+% paragarph
+% \setbeforeparaskip{-0.333\onelineskip
+% \@plus -0.25\onelineskip \@minus -0.25\onelineskip}%
+\setparaindent{3ex}
+% \setafterparaskip{0.333\onelineskip \@plus 0.1\onelineskip}%
+\setparaheadstyle{\normalfont\normalsize\bfseries}%
+}
+\makeheadstyles{appendixkonkuk}{
+\headstyles{konkuk}
+}
 
 \makechapterstyle{konkuk}{
 	\chapterstyle{hangul}
-	\setlength{\beforechapskip}{3.5ex \@plus 1ex \@minus .2ex}
-	\renewcommand*{\chapterheadstart}{\vspace{\beforechapskip}}
-	\setlength{\afterchapskip}{2.3ex \@plus .2ex}
-	\renewcommand{\printchaptername}{}
-	\renewcommand{\chapternamenum}{}
-	\renewcommand{\chaptitlefont}{\centering\normalfont\LARGE\bfseries \selectfont}
+	\headstyles{konkuk}
+
+	\renewcommand{\contentsname}{ { 목차}}
+	\renewcommand{\listfigurename}{ { 그림~목차}}
+	\renewcommand{\listtablename}{ { 표~목차}}
+	\renewcommand{\appendixname}{ {부록}}
+
+% 	\renewcommand{\printchaptername}{} %무의미
+	\renewcommand{\chapternamenum}{\null}
+
+	% chapnamefont 제 <--
 	\renewcommand{\chapnamefont}{\chaptitlefont}
 	\renewcommand{\chapnumfont}{\chaptitlefont}
-	\renewcommand{\printchapternum}{\centering \chapnumfont \thechapter}
+	\renewcommand{\printchapternum}{\chapnumfont \thechapter}
 	\renewcommand{\afterchapternum}{\quad}
 
-	\renewcommand*{\prechapternum}{\chapnamefont\centering 제~}
-	\renewcommand*{\postchapternum}{\chapnamefont ~장}
-	\renewcommand*{\hchaptertitlehead}{제\,\thechapter\,장}
+	\renewcommand*{\prechapternum}{\chapnamefont\centering 제}
+	\renewcommand*{\postchapternum}{\chapnamefont장}
+	\renewcommand*{\hchaptertitlehead}{제\thechapter장}
 
-	\renewcommand{\thesection}{제~\arabic{section}~절}
+	\renewcommand{\thesection}{제\arabic{section}절}
 	\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
-	\renewcommand{\thesubsection}{\bfseries\quad\arabic{subsection}}
-	\renewcommand*{\cftchapterfont}{\large\bfseries\sffamily}%
-	\renewcommand*{\cftchapterpagefont}{\large\bfseries\sffamily}%
+	%\renewcommand{\thesubsection}{\bfseries\arabic{subsection}}
+	\renewcommand{\thesubsection}{\arabic{subsection}.}
+	% cft --- toc change 
+	\renewcommand*{\cftchapterfont}{}%
+	\renewcommand*{\cftchapterpagefont}{}%
+% 	\renewcommand*{\cftchapterpagefont}{\large\bfseries\sffamily}%
+%%% Equation counter 식번호 초기화
+\counterwithin{equation}{chapter}
+% \renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\renewcommand{\theequation}{\arabic{equation}}
 
+%%% Table of Contents 서식
 	\cftsetindents{chapter}{0em}{5em}
 	\cftsetindents{section}{1em}{4.0em}
-	\cftsetindents{subsection}{2em}{3.9em}
+	\cftsetindents{subsection}{2.8em}{2.2em}
 	\renewcommand\cftchapterleader{\cftdotfill{\cftsectiondotsep}} % 점선채우기
+}
+\makechapterstyle{appendixkonkuk}{
+	\chapterstyle{konkuk}
+	\renewcommand{\prechapternum}{}
+	\renewcommand{\postchapternum}{}
+% 	\renewcommand{\chapternamenum}{\enskip}
+
+  \setlength{\beforechapskip}{50pt}
+  \setlength{\midchapskip}{20pt}
+  \setlength{\afterchapskip}{40pt}
+%%%%
+
+	\renewcommand\thechapter{\appendixname\arabic{APPchapter}}
+%	\renewcommand\theequation{\thechapter.\arabic{equation}}
+	\renewcommand\thesection{\thechapter.\arabic{APPsection}}
+%	\renewcommand\thesubsection{\thesection.\arabic{APPsubsection}}
+%	\setcounter{APPchapter}{1}
+	
+%	\chapterstyle{appendixdefault}
+
+	\renewcommand*\prechapternum{}
+	\renewcommand*\postchapternum{}
+	%\renewcommand{\printchapternum}{\chapnumfont[\thechapter]}
+	
+% 	\renewcommand*{\chaptitlefont}{\huge\scshape\bfseries\centering}
+	%\renewcommand{\printchapternum}{\prechapternum\chapnumfont~\thechapter\postchapternum}
+% 	\renewcommand{\printchapternum}{\prechapternum\chapnumfont\thechapter\postchapternum}
+%
+% 	\renewcommand{\printchaptertitle}[1]{%
+% 	\chaptitlefont ##1}
+% 	\setsecheadstyle{\normalfont\bfseries}
+	\setsecnumformat{the##1}
+
+
+
+	%\renewcommand\hchaptertitlehead{부록\,\thechapter\,}
+
+	\renewcommand{\thesection}{[부록\arabic{section}.]}
+	\headstyles{appendixkonkuk}
 }
 
 %$  \renewcommand{\thetable}{\textlangle표 \arabic{chapter}.\arabic{table}\textrangle}   
@@ -399,7 +490,7 @@ figtabcapt]{oblivoir}
 		\end{minipage}
         	
 	\begin{minipage}[t][8.5cm][t]{\textwidth}
-		\centering	\Huge  \@titleKor % \fontsize{24pt}{24pt}\selectfont
+		\centering	\Huge  \@titleKor \par% \fontsize{24pt}{24pt}\selectfont
 		\centering	 \LARGE  \@titleSub
 		\if@isKorean 
 		\else
@@ -407,16 +498,24 @@ figtabcapt]{oblivoir}
 		\fi
 	\end{minipage}
 
-	\begin{minipage}[t][4.5cm][t]{\textwidth}
+	\vfill
+	\begin{minipage}[t][3.0cm][t]{\textwidth}
 		\centering\LARGE \@gradYear년 \@gradMonth월
 	\end{minipage}
-\vfill
-	\begin{minipage}[t][2cm][b]{\textwidth}
-		\centering 
-		{\huge건국대학교 대학원}\\[1.5ex]
-		{\LARGE\@deptNameKor} \\[1.5ex]
-%            \@authorHanjaFN\ \ \ \@authorHanjaGN\ \ \ \@authorHanjaGNb %한자 표기 원하면 이걸로
-		{\huge \@authorKor }
+
+	\begin{minipage}[t][1.0cm][c]{\textwidth}
+		\centering
+			{\huge건국대학교 대학원}	
+	\end{minipage}\\[0mm]
+
+	\begin{minipage}[t][1.5cm][c]{\textwidth}
+		\centering
+			{\LARGE\@deptNameKor} 
+	\end{minipage}\\[0mm]
+
+	\begin{minipage}[t][2.0cm][t]{\textwidth}
+		\centering
+			{\huge \@authorKor}
 	\end{minipage}
 	\clearpage
 }
@@ -432,7 +531,7 @@ figtabcapt]{oblivoir}
 			\par 지도교수 \makebox[\widthof{청구논문}][s]	{\@advisorMajorKor}
 	\end{minipage}
 
-	\begin{minipage}[t][6cm][t]{\textwidth}
+	\begin{minipage}[t][6.6cm][t]{\textwidth}
 		\centering
 		\if@isKorean 
 		{\HUGE  \@titleKor }
@@ -442,16 +541,32 @@ figtabcapt]{oblivoir}
 		\fi
 	\end{minipage}\\[0mm]
 
-	\begin{minipage}[t][2.5cm][t]{\textwidth}
+	\begin{minipage}[c][3.0cm][t]{\textwidth}
 		\centering	\Large \@gradYear년 \@gradMonth월
-	\end{minipage}
+	\end{minipage}\\[0mm]
 
-	\begin{minipage}[t][2cm][b]{\textwidth}
+	\begin{minipage}[c][1.7cm][c]{\textwidth}
+		\centering
+			{\LARGE건국대학교 대학원}	
+	\end{minipage}\\[0mm]
+
+	\begin{minipage}[c][1.5cm][c]{\textwidth}
+		\centering
+			{\Large\@deptNameKor} 
+	\end{minipage}\\[0mm]
+
+	\begin{minipage}[c][1.1cm][c]{\textwidth}
+		\centering
+			{\LARGE \@authorKor}
+	\end{minipage}\\[0mm]
+		\begin{comment}
+	\begin{minipage}[c][2cm][b]{\textwidth}
 		\centering
 			{\LARGE건국대학교 대학원}\par
 			{\Large\@deptNameKor} \par
 			{\LARGE \@authorKor}
 	\end{minipage}
+	\end{comment}
 	\clearpage
 }
 % %%
@@ -481,9 +596,11 @@ figtabcapt]{oblivoir}
 
 	\begin{minipage}[t][2cm][b]{\textwidth}
 		\centering
-			{\huge건국대학교 대학원}\par
-			{\LARGE\@deptNameKor} \\
-			{\huge\@authorKor}
+		{\huge건국대학교 대학원}\\
+
+		{\LARGE\@deptNameKor} \\
+
+		{\huge\@authorKor}\\
 	\end{minipage}\\[0mm]
 	\clearpage
 }
@@ -491,33 +608,33 @@ figtabcapt]{oblivoir}
 \renewcommand{\makeapproval}{
 	\thispagestyle{empty}
 	{
-	\huge\bfseries \@authorKor의 \@degreeNameKor 청구논문을 인준함\\ %공대 외에서 쓰려면 수정해야함.
+	\centering \LARGE\bfseries \@authorKor의 \@degreeFieldKor~\@degreeNameKor 청구논문을 인준함.\\ %공대 외에서 쓰려면 수정해야함.
 	\bigskip
 
 	\if@isDoctor
-	\begin{minipage}[t][7cm][b]{\textwidth}
+	\begin{minipage}[t][11cm][b]{\textwidth}
 	%
 		\bfseries \Large\centering%
 					%委 員 長
 		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(인)}}} 
-		\vfill
+		\null\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
-		\vfill
+		\null\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
-		\vfill
+		\null\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
-		\vfill
+		\null\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
 	\end{minipage}
 	\else
 	\begin{minipage}[t][7cm][b]{\textwidth}
 		\Large\centering
 		{심사위원장\underline{\makebox[\widthof{안녕하세요 반갑습니다. }][r]{(인)}}} 
-		\vfill
+		\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
-		\vfill
+		\vspace{1cm}
 		{심사위원\underline{\makebox[\widthof{장안녕하세요 반갑습니다. }][r]{(인)}}}
-		\vfill
+		\vspace{1cm}
 	\end{minipage}
 	\fi
 	\vfill %\centering
@@ -544,11 +661,12 @@ figtabcapt]{oblivoir}
 \newenvironment{abstractKor}{%
 % 	\pagenumbering{roman}  % 로마자 페이지 시작
 	\clearpage
+	\phantomsection
 	\pagestyle{plain}%
 	\addcontentsline{toc}{chapter}{국문초록}
 	% 초록을 목차(TOC)에 삽입%
 	\renewcommand{\linebreak}{\ } % \linebreak -> 공백 대체
-	{\raggedleft \bfseries \Large국문초록}
+	{\raggedleft \bfseries \Large국문초록}\\
 	\begin{center}
 		\textbf{\LARGE\@titleKor} % 초록명 -> Abstract
 \\  
@@ -572,11 +690,14 @@ figtabcapt]{oblivoir}
 \newenvironment{abstractEng}{%
 % 	\pagenumbering{roman}  % 로마자 페이지 시작
 	\clearpage
+	\phantomsection
 	\pagestyle{plain}%
+	%\addcontentsline{toc}{chapter}{영문초록}
 	\addcontentsline{toc}{chapter}{ABSTRACT}
 	% 초록을 목차(TOC)에 삽입
-	
-%
+
+	\glsresetall
+	\onehalfspacing
 	\renewcommand{\linebreak}{\ } % \linebreak -> 공백 대체
 	{\raggedleft \bfseries \Large ABSTRACT}
 	\begin{center}
@@ -596,9 +717,8 @@ figtabcapt]{oblivoir}
 %         \setcounter{pagemarker}{\value{\page}}             % 마지막 페이지 번호를 저장
     \\
     \vfill
-	{\noindent\rule{\linewidth}{.5mm}}
+	{\noindent\rule{\linewidth}{.4mm}}
 	\\ \textbf{Keyword} :\ \@keywordsEng
-	\\
 	%\\ \textbf{Student Number}:\ \@studentID
 	\addtocounter{pagemarker}{1}% 백색별지분을 고려
 % 	\newpage \pagenumbering{arabic}% 페이지 아라비아 숫자 포맷
@@ -612,9 +732,9 @@ figtabcapt]{oblivoir}
 \newcommand{\makecontents}{%            % TOC, LOT, LOF 생성
 %     \pagenumbering{roman}
 \frontmatter
-\tableofcontents
-	\listoftables
-	\listoffigures % 
+\tableofcontents \clearpage
+	\listoftables \clearpage
+	\listoffigures \clearpage
 % 		\clearpage\pagenumbering{arabic}
 }
 \newcommand{\main}{%
@@ -622,4 +742,36 @@ figtabcapt]{oblivoir}
 	\renewcommand{\baselinestretch}{1.6}\selectfont %
 
 }
+\def\set@appendix@chapterkonkuk{%
+  \gdef\@chapapp{\appendixname}%
+%   \gdef\thechapter{\arabic{APPchapter}}%
+  \gdef\thesection{\thechapter.\arabic{APPsection}}%
+%  \counterwithout{figure}{chapter}\counterwithout{table}{chapter}%
+  \counterwithin{figure}{APPchapter}\counterwithin{table}{APPchapter}%
+  \counterwithin{equation}{APPchapter}%
+  \renewcommand\thefigure{\thechapter.\arabic{figure}}%
+  \renewcommand\thetable{\thechapter.\arabic{table}}%
+  \renewcommand\theequation{\thechapter.\arabic{equation}}%
+  \set@appendix@chapsec
+%   \renewcommand\hchaptertitlehead{[\appendixname\\thechapter.]}%
+}
+
+\renewcommand{\appendix}{\par
+ \setcounter{chapter}{1}%
+%  \setcounter{section}{0}%
+ \gdef\@chapapp{\appendixname}%
+%  \gdef\thechapter{\@Alph\c@chapter}%
+  \set@appendix@chapterkonkuk
+  \anappendixtrue
+  \chapterstyle{appendixkonkuk}%
+}
+
+\newcommand{\back}{%
+	\backmatter
+	%\addcontentsline{toc}{chapter}{{ 부록}}
+	\appendix
+}
+\AppendixTitleToToc
+\AttachAppendixTitleToSecnum
+%\AppendixTitle
 \endinput
